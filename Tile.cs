@@ -20,7 +20,7 @@ class Tile
 
     public int BaseValue;   // only used for Property
     public Player? Owner;   // null = unowned
-    public SuitType? Suit; // only used if Type == Suit
+    public SuitType? Suit;  // only used if Type == Suit
 
     public Tile(int index, TileType type, int baseValue = 0, SuitType? suit = null)
     {
