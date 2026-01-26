@@ -9,22 +9,35 @@
 
         int totalSuits = 4;
         int startBonus = 300;
+        int turn = 1;
 
-        Console.WriteLine($"\nTurn {turn}");
+        while (true)
+        {
+            Console.WriteLine($"\nTurn {turn}");
 
-        int roll = dice.Roll();
+            int roll = dice.Roll();
 
-        Console.WriteLine($"{player.Name} rolled {roll}");
+            Console.WriteLine($"{player.Name} rolled {roll}");
 
-        MovePlayer(player, board, roll, totalSuits, startBonus);
+            MovePlayer(player, board, roll, totalSuits, startBonus);
 
-        Tile tile = board.Tiles[player.Position];
+            Tile tile = board.Tiles[player.Position];
 
-        Console.WriteLine($"{player.Name} landed on tile {tile.Index} ({tile.Type})");
+            Console.WriteLine($"{player.Name} landed on tile {tile.Index} ({tile.Type})");
 
-        ResolveLanding(player, tile, totalSuits, startBonus);
+            ResolveLanding(player, tile, totalSuits, startBonus);
 
-        Console.WriteLine($"Wallet: {player.Wallet} | Net worth: {player.NetWorth}");
+            Console.WriteLine($"Wallet: {player.Wallet} | Net worth: {player.NetWorth}");
+
+            Console.WriteLine("Press ENTER for next turn (or type q to quit)");
+
+            string input = Console.ReadLine();
+
+            if (input == "q")
+                break;
+
+            turn++;
+        }
     }
 
     static void  MovePlayer(
@@ -57,23 +70,23 @@
     int totalSuits,
     int startBonus)
     {
-        switch(tile)
+        if (tile.Type == TileType.Suit && tile.Suit.HasValue)
         {
-            case tile.Type == TileType.Suit && tile.Suit.HasValue:
-                if (player.Suits.Add(tile.Suit.Value))
-                {
-                    Console.WriteLine($"    Collected suit: {tile.Suit.Value}");
-                }
-                break;
+            if (player.Suits.Add(tile.Suit.Value))
+            {
+                Console.WriteLine($"    Collected suit: {tile.Suit.Value}");
+            }
+        }
 
-            case tile.Type == TileType.Start:
-                if (player.HasAllSuits(totalSuits))
-                {
-                    player.Wallet += startBonus;
-                    player.ClearSuits();
-                    Console.WriteLine($"    Full suits! Bonus +{startBonus}");
-                }
-                break;
+        if (tile.Type == TileType.Start)
+        {
+            if (player.HasAllSuits(totalSuits))
+            {
+                player.Wallet += startBonus;
+                player.ClearSuits();
+
+                Console.WriteLine($"    Full suits! Bonus +{startBonus}");
+            }
         }
     }
 

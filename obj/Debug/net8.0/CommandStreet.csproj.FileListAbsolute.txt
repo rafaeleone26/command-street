@@ -12,3 +12,4 @@
 /home/rafael/Documents/CommandStreet/obj/Debug/net8.0/CommandStreet.pdb
 /home/rafael/Documents/CommandStreet/obj/Debug/net8.0/CommandStreet.genruntimeconfig.cache
 /home/rafael/Documents/CommandStreet/obj/Debug/net8.0/ref/CommandStreet.dll
+/home/rafael/Documents/CommandStreet/obj/Debug/net8.0/CommandStreet.sourcelink.json
