@@ -12,7 +12,8 @@ public class MovementTests
 
         player.Position = 10;
 
-        Program.MovePlayer(player, board, roll: 3, totalSuits: 4, startBonus: 300);
+        var game = new Game();
+        game.MovePlayer(player, board, roll: 3);
 
         Assert.Equal(1, player.Position);
     }
@@ -25,7 +26,8 @@ public class MovementTests
 
         player.Position = 9;
 
-        Program.MovePlayer(player, board, roll: 2, totalSuits: 4, startBonus: 300);
+        var game = new Game();
+        game.MovePlayer(player, board, roll: 2);
 
         Assert.Single(player.Suits);
     }
@@ -38,7 +40,8 @@ public class MovementTests
 
         player.Position = 9;
 
-        Program.MovePlayer(player, board, roll: 1, totalSuits: 4, startBonus: 300);
+        var game = new Game();
+        game.MovePlayer(player, board, roll: 1);
 
         Assert.Single(player.Suits);
     }
@@ -58,7 +61,8 @@ public class MovementTests
 
         int startingWallet = player.Wallet;
 
-        Program.MovePlayer(player, board, roll: 3, totalSuits: 4, startBonus: 300);
+        var game = new Game();
+        game.MovePlayer(player, board, roll: 3);
 
         Assert.Equal(startingWallet + 300, player.Wallet);
         Assert.Empty(player.Suits);
@@ -79,7 +83,8 @@ public class MovementTests
 
         int startingWallet = player.Wallet;
 
-        Program.MovePlayer(player, board, roll: 2, totalSuits: 4, startBonus: 300);
+        var game = new Game();
+        game.MovePlayer(player, board, roll: 2);
 
         Assert.Equal(startingWallet + 300, player.Wallet);
         Assert.Empty(player.Suits);
