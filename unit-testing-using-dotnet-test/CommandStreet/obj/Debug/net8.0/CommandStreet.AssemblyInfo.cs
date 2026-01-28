@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CommandStreet")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+772cc2e21a3a160a825d42c018c9d37777dc60c2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+000ba53c0178fa93d6f0a5d4cfa3f9aa59426648")]
 [assembly: System.Reflection.AssemblyProductAttribute("CommandStreet")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CommandStreet")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

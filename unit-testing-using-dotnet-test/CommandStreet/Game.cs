@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+
 public class Game
 {
     private Board board;
@@ -7,21 +9,29 @@ public class Game
     private int totalSuits;
     private int startBonus;
     private int turn;
+    private bool isGameOver;
+    public bool IsGameOver => isGameOver;
+    private bool isSparkleMoment;
+    public bool IsSparkleMoment => isSparkleMoment;
 
-    public Game()
+    private int winNetWorth = 5000;
+
+    public Game(Board board, Player player)
     {
-        board = new Board();
+        this.board = board;
+        this.player = player;
         dice = new Dice();
-        player = new Player("Player 1", 1000);
 
         totalSuits = 4;
         startBonus = 300;
         turn = 1;
+
+        isGameOver = false;
     }
 
     public void Run()
     {
-        while (true)
+        while (!IsGameOver)
         {
             Console.WriteLine($"\nTurn {turn}");
 
@@ -30,6 +40,8 @@ public class Game
             Console.WriteLine($"{player.Name} rolled {roll}");
 
             MovePlayer(player, board, roll);
+
+            if (IsGameOver) break;
 
             Tile tile = board.Tiles[player.Position];
 
@@ -65,6 +77,8 @@ public class Game
             Console.WriteLine($"  Passed tile {tile.Index} ({tile.Type})");
 
             HandlePassTile(player, tile);
+
+            if (IsGameOver) break;
         }
     }
 
@@ -80,12 +94,21 @@ public class Game
 
         if (tile.Type == TileType.Start)
         {
-            if (player.HasAllSuits(totalSuits))
+            if (player.NetWorth >= winNetWorth)
+            {
+                CheckWinCondition();
+            }
+            else if (player.HasAllSuits(totalSuits))
             {
                 player.Wallet += startBonus;
                 player.ClearSuits();
 
                 Console.WriteLine($"    Full suits! Bonus +{startBonus}");
+                    if (player.NetWorth >= winNetWorth)
+                    {
+                        isSparkleMoment = true;
+                        Console.WriteLine($"Everything starts to sparkle");
+                    }
             }
         }
     }
@@ -105,6 +128,14 @@ public class Game
                     Console.WriteLine($"Bought property for {tile.BaseValue}");
                 }
             }
+        }
+    }
+    private void CheckWinCondition()
+    {
+        if (player.NetWorth >= winNetWorth)
+        {
+            Console.WriteLine("\n🎉 YOU WIN! 🎉");
+            isGameOver = true;
         }
     }
 }
