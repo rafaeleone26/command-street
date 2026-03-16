@@ -2,7 +2,7 @@ namespace CommandStreet.Tests;
 
 using Xunit;
 
-public class MovementTests
+public class PlayerMovementTests
 {
     [Fact]
     public void Player_Wraps_Around_Board()
@@ -13,7 +13,8 @@ public class MovementTests
 
         player.Position = 10;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 3);
 
         Assert.Equal(1, player.Position);
@@ -28,7 +29,8 @@ public class MovementTests
 
         player.Position = 9;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 2);
 
         Assert.Single(player.Suits);
@@ -43,7 +45,8 @@ public class MovementTests
 
         player.Position = 9;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 1);
 
         Assert.Single(player.Suits);
@@ -65,7 +68,8 @@ public class MovementTests
 
         int startingWallet = player.Wallet;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 3);
 
         Assert.Equal(startingWallet + 300, player.Wallet);
@@ -88,7 +92,8 @@ public class MovementTests
 
         int startingWallet = player.Wallet;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 2);
 
         Assert.Equal(startingWallet + 300, player.Wallet);
@@ -106,7 +111,8 @@ public class MovementTests
 
         int startingWallet = player.Wallet;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 3);
 
         Assert.True(game.IsGameOver);
@@ -123,7 +129,8 @@ public class MovementTests
 
         int startingWallet = player.Wallet;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 2);
 
         Assert.True(game.IsGameOver);
@@ -145,7 +152,8 @@ public class MovementTests
 
         int startingWallet = player.Wallet;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 3);
 
         Assert.True(game.IsSparkleMoment);
@@ -169,7 +177,8 @@ public class MovementTests
 
         int startingWallet = player.Wallet;
 
-        var game = new Game(board, player);
+        var players = new List<Player> { player };
+        var game = new Game(board, players);
         game.MovePlayer(player, board, roll: 2);
 
         Assert.True(game.IsSparkleMoment);

@@ -4,7 +4,9 @@ public class Game
 {
     private Board board;
     private Dice dice;
-    private Player player;
+    private List<Player> players;
+    private int currentPlayerIndex;
+    public int CurrentPlayerIndex => currentPlayerIndex;
 
     private int totalSuits;
     private int startBonus;
@@ -16,10 +18,10 @@ public class Game
 
     private int winNetWorth = 5000;
 
-    public Game(Board board, Player player)
+    public Game(Board board, List<Player> players)
     {
         this.board = board;
-        this.player = player;
+        this.players = players;
         dice = new Dice();
 
         totalSuits = 4;
@@ -33,60 +35,63 @@ public class Game
     {
         while (!IsGameOver)
         {
+            Player currentPlayer = players[currentPlayerIndex];
+
             Console.WriteLine($"\nTurn {turn}");
 
             int roll = dice.Roll();
 
-            Console.WriteLine($"{player.Name} rolled {roll}");
+            Console.WriteLine($"{currentPlayer.Name} rolled {roll}");
 
-            MovePlayer(player, board, roll);
+            MovePlayer(currentPlayer, board, roll);
 
             if (IsGameOver) break;
 
-            Tile tile = board.Tiles[player.Position];
+            Tile tile = board.Tiles[currentPlayer.Position];
 
-            Console.WriteLine($"{player.Name} landed on tile {tile.Index} ({tile.Type})");
+            Console.WriteLine($"{currentPlayer.Name} landed on tile {tile.Index} ({tile.Type})");
 
-            ResolveLanding(player, tile);
+            ResolveLanding(currentPlayer, tile);
 
-            Console.WriteLine($"Wallet: {player.Wallet} | Net worth: {player.NetWorth}");
+            Console.WriteLine($"Wallet: {currentPlayer.Wallet} | Net worth: {currentPlayer.NetWorth}");
 
             Console.WriteLine("Press ENTER for next turn (or type q to quit)");
 
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             if (input == "q")
                 break;
 
-            turn++;
+            AdvanceTurn();
         }
     }
-    public void MovePlayer(Player player, Board board, int roll)
+
+    public void MovePlayer(Player currentPlayer, Board board, int roll)
     {
         for (int step = 0; step < roll; step++)
         {
-            player.Position++;
+            currentPlayer.Position++;
 
-            if (player.Position >= board.Tiles.Count)
+            if (currentPlayer.Position >= board.Tiles.Count)
             {
-                player.Position = 0;
+                currentPlayer.Position = 0;
             }
 
-            Tile tile = board.Tiles[player.Position];
+            Tile tile = board.Tiles[currentPlayer.Position];
 
             Console.WriteLine($"  Passed tile {tile.Index} ({tile.Type})");
 
-            HandlePassTile(player, tile);
+            HandlePassTile(currentPlayer, tile);
 
             if (IsGameOver) break;
         }
     }
 
-    private void HandlePassTile(Player player, Tile tile)
+    private void HandlePassTile(Player currentPlayer, Tile tile)
     {
         if (tile.Type == TileType.Suit && tile.Suit.HasValue)
         {
-            if (player.Suits.Add(tile.Suit.Value))
+            if (currentPlayer.Suits.Add(tile.Suit.Value))
             {
                 Console.WriteLine($"    Collected suit: {tile.Suit.Value}");
             }
@@ -94,17 +99,17 @@ public class Game
 
         if (tile.Type == TileType.Start)
         {
-            if (player.NetWorth >= winNetWorth)
+            if (currentPlayer.NetWorth >= winNetWorth)
             {
-                CheckWinCondition();
+                CheckWinCondition(currentPlayer);
             }
-            else if (player.HasAllSuits(totalSuits))
+            else if (currentPlayer.HasAllSuits(totalSuits))
             {
-                player.Wallet += startBonus;
-                player.ClearSuits();
+                currentPlayer.Wallet += startBonus;
+                currentPlayer.ClearSuits();
 
                 Console.WriteLine($"    Full suits! Bonus +{startBonus}");
-                    if (player.NetWorth >= winNetWorth)
+                    if (currentPlayer.NetWorth >= winNetWorth)
                     {
                         isSparkleMoment = true;
                         Console.WriteLine($"Everything starts to sparkle");
@@ -113,29 +118,36 @@ public class Game
         }
     }
 
-    private void ResolveLanding(Player player, Tile tile)
+    private void ResolveLanding(Player currentPlayer, Tile tile)
     {
         if (tile.Type == TileType.Property)
         {
             if (tile.Owner == null)
             {
-                if (player.Wallet >= tile.BaseValue)
+                if (currentPlayer.Wallet >= tile.BaseValue)
                 {
-                    player.Wallet -= tile.BaseValue;
-                    tile.Owner = player;
-                    player.Properties.Add(tile);
+                    currentPlayer.Wallet -= tile.BaseValue;
+                    tile.Owner = currentPlayer;
+                    currentPlayer.Properties.Add(tile);
 
                     Console.WriteLine($"Bought property for {tile.BaseValue}");
                 }
             }
         }
     }
-    private void CheckWinCondition()
+
+    private void CheckWinCondition(Player currentPlayer)
     {
-        if (player.NetWorth >= winNetWorth)
+        if (currentPlayer.NetWorth >= winNetWorth)
         {
             Console.WriteLine("\n🎉 YOU WIN! 🎉");
             isGameOver = true;
         }
+    }
+
+    public void AdvanceTurn()
+    {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+        turn++;
     }
 }

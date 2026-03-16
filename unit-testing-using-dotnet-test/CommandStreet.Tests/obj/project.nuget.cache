@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "p8tXLfaSrkEiHX7ADuHosjOpvxSznuYyVwDXgL1FA2nbstWKPMGmbGe46JvlZUw/8whKGzxDlw3BGrr+VvJfQg==",
+  "dgSpecHash": "YArh7tGRbp4ZaNzCNwUa1ZShK0Pjy+7E+NlCxYlRnd8g+wQHbGa1bAxFa+30ypKbL4sqcNKHWEsgDNlmWR0sPA==",
   "success": true,
   "projectFilePath": "/home/rafael/Documents/CommandStreet/unit-testing-using-dotnet-test/CommandStreet.Tests/CommandStreet.Tests.csproj",
   "expectedPackageFiles": [
