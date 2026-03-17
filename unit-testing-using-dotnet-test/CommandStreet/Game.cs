@@ -124,13 +124,21 @@ public class Game
         {
             if (tile.Owner == null)
             {
-                if (currentPlayer.Wallet >= tile.BaseValue)
+                Console.WriteLine($"Wallet: {currentPlayer.Wallet} | Net worth: {currentPlayer.NetWorth}");
+                Console.WriteLine($"Property costs {tile.BaseValue}. Buy it? (y/n)");
+                string? input = Console.ReadLine();
+
+                if (input?.ToLower() == "y")
                 {
                     currentPlayer.Wallet -= tile.BaseValue;
                     tile.Owner = currentPlayer;
                     currentPlayer.Properties.Add(tile);
 
                     Console.WriteLine($"Bought property for {tile.BaseValue}");
+                }
+                else
+                {
+                    Console.WriteLine("Skipped purchase");
                 }
             }
         }
