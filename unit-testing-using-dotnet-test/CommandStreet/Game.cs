@@ -140,6 +140,14 @@ public class Game
                 {
                     Console.WriteLine("Skipped purchase");
                 }
+            } else if (tile.Owner != null && tile.Owner != currentPlayer)
+            {
+                int rent = tile.BaseValue / 5; // simple rule: 20% of value
+
+                Console.WriteLine($"{currentPlayer.Name} pays {rent} to {tile.Owner.Name}");
+
+                currentPlayer.Wallet -= rent;
+                tile.Owner.Wallet += rent;
             }
         }
     }
